@@ -5,15 +5,16 @@ import ResultModal from "./ResultModal";
 
 export default function TimerChallenge({ title, targetTime }) {
   const [timerStarted, setTimerStarted] = useState(false);
-  const [timerExpired, setTimerExpired] = useState(false);
 
   const timer = useRef(); //use UseRef to store value for component behind the scene so that value dont get lost when component reRenders.
-
+  const dialogRef = useRef();
+  
   function handleStart() {
     setTimerStarted(true);
 
     timer.current = setTimeout(() => {
-      setTimerExpired(true);
+      dialogRef.current.showModal();
+
     }, targetTime * 1000);
   }
 
@@ -22,7 +23,7 @@ export default function TimerChallenge({ title, targetTime }) {
   }
   return (
     <>
-    {timerExpired && <ResultModal targetTime={targetTime} result="Lost" /> }
+    <ResultModal ref={dialogRef} targetTime={targetTime} result="Lost" />
       <div className="challenge">
         <h2>{title}</h2>
         <p className="challenge-time">
