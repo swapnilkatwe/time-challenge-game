@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useRef, forwardRef, useImperativeHandle } from 'react';
+import { createPortal } from 'react-dom';
 
 const ResultModal = forwardRef(function ResultModal({ targetTime, timeRemaining, onReset}, ref) {
   
@@ -14,7 +15,7 @@ const ResultModal = forwardRef(function ResultModal({ targetTime, timeRemaining,
       };
     });
 
-  return (
+  return createPortal(
     <dialog ref={dialogRef} className="result-modal">
       {timeRemaining <= 0 && <h2>You Lost!</h2>}
       {timeRemaining > 0 && <h2>Your Score: {score}</h2>}
@@ -27,7 +28,8 @@ const ResultModal = forwardRef(function ResultModal({ targetTime, timeRemaining,
       <form method="dialog" onSubmit={onReset}>
         <button>Close</button>
       </form>
-    </dialog>
+    </dialog>,
+    document.getElementById("result-modal")
   );
 });
 
